@@ -1,0 +1,458 @@
+{% extends "navbar.html" %}
+
+{% block top %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - sigmabin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='legacy/index.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='files/dropdown.css') }}">
+    <style>
+        /* Skidbin-inspired global styles */
+        html {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: #060606;
+            color: white;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        input, textarea, select {
+            font-size: 16px !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+        input:focus, textarea:focus, select:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Content container (Skidbin style) */
+        .content {
+            color: white;
+            padding-top: 20px;
+            width: 50%;
+            max-width: 800px;
+            margin: 60px auto;
+        }
+        h1 {
+            text-align: center;
+            font-size: 25px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            color: white;
+        }
+
+        /* Search container (Skidbin style) */
+        .search-container {
+            text-align: center;
+            margin: 10px 0 0 0;
+        }
+        .search-form {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        .search-box {
+            background: #282828;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            width: 240px;
+            height: 32px;
+            box-sizing: border-box;
+        }
+        .search-box::placeholder {
+            color: #878787;
+        }
+        .search-button {
+            background: #282828;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            cursor: pointer;
+            height: 32px;
+            box-sizing: border-box;
+            font-size: 13px;
+        }
+
+        /* Showing text (Skidbin style) */
+        .showing-text {
+            text-align: center;
+            font-size: 13px;
+            margin: 10px 0;
+            color: #878787;
+        }
+
+        /* Rank sections and tables (Skidbin style) */
+        .rank-section {
+            margin-bottom: 25px;
+        }
+        .rank-section h2 {
+            color: white;
+            margin: 10px 0;
+            padding: 0;
+            font-weight: normal;
+            font-size: 16px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #080808;
+            font-size: 14px;
+        }
+        th {
+            padding: 8px;
+            text-align: left;
+            background: #181818;
+            font-weight: bold;
+            border: none;
+            border-bottom: 1px solid #333;
+        }
+        th:not(:first-child) {
+            text-align: center;
+        }
+        td {
+            padding: 9px;
+            border: none;
+            border-bottom: 1px solid #333;
+        }
+        td:not(:first-child) {
+            text-align: center;
+        }
+        tr {
+            background: #080808;
+        }
+        tr:nth-child(even) {
+            background: #181818;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        td:first-child, th:first-child {
+            width: 8%;
+        }
+        td:nth-child(2), th:nth-child(2) {
+            width: 25%;
+            text-align: left;
+        }
+        td:nth-child(3), th:nth-child(3) {
+            width: 67%;
+        }
+
+        /* Responsive design (Skidbin style) */
+        @media screen and (max-width: 768px) {
+            .content {
+                width: 100% !important;
+                max-width: none !important;
+                margin: 40px 0 !important;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+            .rank-section {
+                width: 100%;
+                margin: 20px 0;
+            }
+            table {
+                font-size: 12px;
+                table-layout: fixed;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            td, th {
+                padding: 6px 4px;
+                box-sizing: border-box;
+            }
+            td:first-child, th:first-child {
+                width: 40%;
+                max-width: none;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            td:first-child a {
+                display: block;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            td:nth-child(2), th:nth-child(2) {
+                width: 35%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            td:nth-child(3), th:nth-child(3) {
+                width: 25%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    </style>
+</head>
+<body>
+{% endblock %}
+
+{% block bottom %}
+    <div class="content">
+        <h1>Users</h1>
+        <div class="search-container">
+            <form class="search-form" method="POST">
+                <input name="search" type="text" class="search-box" placeholder="Username...">
+                <button type="submit" class="search-button">Search</button>
+            </form>
+        </div>
+        <p class="showing-text">Showing {{ admin_users|length + manager_users|length + mod_users|length + council_users|length + clique_users|length + criminal_users|length + vip_users|length + regular_users|length }} users</p>
+
+        <div class="rank-section">
+            <h2>Admin</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in admin_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #ff0000; font-weight: bold; background-image: url('https://cdn.doxbin.net/purple.gif'); display: inline-block;">
+                                {{ user[1] }} <span style="color: #CC0000;">
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not admin_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>Manager</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in manager_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #FFD700; font-weight: bold; background-image: url('https://cdn.doxbin.net/gold.gif'); display: inline-block;">
+                                {{ user[1] }} <span style="color: #9b1ecc;">[Manager]</span>
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not manager_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>Mod</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in mod_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #D2C2E5; font-weight: bold; background-image: url('https://cdn.doxbin.net/gold.gif'); display: inline-block;">
+                                {{ user[1] }} <span style="color: #00ff15;">[Mod]</span>
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not mod_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>Council</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in council_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #09569E; font-weight: bold;">
+                                {{ user[1] }} <span style="color: #3462a7;">[Council]</span>
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not council_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>Clique</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in clique_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #FF69B4; font-weight: bold;">
+                                {{ user[1] }} <span style="color: #254099;">[Clique]</span>
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not clique_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>Criminal</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in criminal_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #FF4500; font-weight: bold;">
+                                {{ user[1] }} <span style="color: #472a6e;">[Criminal]</span>
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not criminal_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>VIP</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in vip_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a class="dox-username" href="{{ url_for('user', username=user[1]) }}" target="_blank" style="color: #00CED1; font-weight: bold; background-image: url('https://cdn.doxbin.net/cyan.gif'); display: inline-block;">
+                                {{ user[1] }} <span style="color: #701d91;">[VIP]</span>
+                            </a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not vip_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="rank-section">
+            <h2>Users</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in regular_users %}
+                    <tr>
+                        <td>{{ user[0] }}</td>
+                        <td>
+                            <a href="{{ url_for('user', username=user[1]) }}" style="color: #2A9FD6;">{{ user[1] }}</a>
+                        </td>
+                        <td>{{ user[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                    {% if not regular_users %}
+                    <tr><td colspan="3">No users found in this rank.</td></tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
+{% endblock %}

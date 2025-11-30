@@ -1,0 +1,1456 @@
+{% extends "navbar.html" %}
+
+{% block top %}
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ login }}'s Profile | Darkbin</title>
+    <link rel="stylesheet" href="/static/legacy/index.css">
+    <link rel="stylesheet" href="/static/files/dropdown.css">
+    <link rel="stylesheet" href="/static/files/doxbin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="canonical" href="https://darkbin.com/profile/{{ login }}"/>
+    
+    <style>
+        /* CSS remains unchanged from the previous version */
+        .comment-text a {
+            text-decoration: none;
+        }
+        
+        .comment-text a:hover {
+            text-decoration: underline;
+        }
+        
+        .comment-text a:not([data-status]) {
+            color: #2A9FD6 !important;
+        }
+        
+        .comment-text a:not([data-status]):hover {
+            text-decoration-color: #2A9FD6;
+        }
+        
+        .comment-text a[data-status="founder"]:hover {
+            text-decoration-color: #ffaa00;
+        }
+        
+        .comment-text a[data-status="admin"]:hover {
+            text-decoration-color: #ff4444;
+        }
+        
+        .comment-text a[data-status="manager"]:hover {
+            text-decoration-color: #bb71e4;
+        }
+        
+        .comment-text a[data-status="mod"]:hover {
+            text-decoration-color: #39ff14;
+        }
+        
+        .comment-text a[data-status="council"]:hover {
+            text-decoration-color: #87cefa;
+        }
+        
+        .comment-text a[data-status="helper"]:hover {
+            text-decoration-color: #5555ff;
+        }
+        
+        .comment-text a[data-status="clique"]:hover {
+            text-decoration-color: #095699;
+        }
+        
+        .comment-text a[data-status="rich"]:hover {
+            text-decoration-color: #ffd700;
+        }
+        
+        .comment-text a[data-status="criminal"]:hover {
+            text-decoration-color: #780a48;
+        }
+        
+        .comment-text a[data-status="vip"]:hover {
+            text-decoration-color: #9b318e;
+        }
+        
+        .main-container {
+            max-width: 1000px;
+            margin: 40px auto 20px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .profile-header {
+            background: #060606;
+            border: 1px solid #282828;
+            border-radius: 3px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .profile-header.has-banner {
+            background: transparent;
+            border: 1px solid #282828;
+            padding: 20px;
+        }
+        
+        .banner-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .profile-banner-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 1;
+        }
+        
+        .avatar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+        }
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 3px;
+            overflow: hidden;
+            flex-shrink: 0;
+            margin-bottom: 10px;
+            aspect-ratio: 1/1;
+        }
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+        }
+        .profile-info {
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+        }
+        .profile-header-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+        .profile-name-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-name {
+            font-size: 20px;
+            color: #bfbfbf; /* Default color if no status is matched */
+            font-weight: bold;
+            margin: 0;
+            line-height: 1;
+            white-space: nowrap;
+            overflow: visible; /* Ensure text is not hidden */
+        }
+        .profile-bio {
+            color: #fff;
+            font-size: 15px;
+            margin: 4px 0;
+            padding-right: 20px;
+        }
+        .profile-bio a {
+            color: #ff0000;
+            text-decoration: none;
+        }
+        .profile-bio a:hover {
+            text-decoration: underline;
+        }
+        .follow-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 4px;
+        }
+        .follow-stat {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .follow-stat:hover {
+            color: #ccc;
+        }
+        .follow-count {
+            font-weight: bold;
+            margin-right: 2px;
+        }
+        .follow-label {
+            color: #666;
+        }
+        .content-section {
+            background: #060606;
+            border: 1px solid #282828;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .section-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #282828;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .section-content {
+            padding: 15px 20px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #282828;
+            color: #fff;
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .data-table th {
+            text-align: left;
+            padding: 8px 20px;
+            color: #fff;
+            font-weight: bold;
+            background-color: #060606;
+            vertical-align: top;
+        }
+        .data-table th:nth-child(1) {
+            width: 50%;
+        }
+        .data-table th:nth-child(2),
+        .data-table th:nth-child(3),
+        .data-table th:nth-child(4) {
+            width: 16.67%;
+            text-align: center;
+        }
+        .data-table td {
+            padding: 12px 20px;
+            color: #fff;
+            border: none;
+            vertical-align: top;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .data-table td a {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+            margin: -12px -20px;
+            padding: 12px 20px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        tr.paste-row td {
+            padding: 6px 20px;
+            font-size: 14px;
+        }
+        tr.paste-row td a {
+            margin: -6px -20px;
+            padding: 6px 20px;
+            font-size: 14px;
+        }
+        .data-table tr {
+            border-bottom: 1px solid #88bfdf;
+        }
+        .data-table tr:last-child {
+            border-bottom: none;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .pagination-container {
+            padding: 15px 20px;
+            border-top: 1px solid #282828;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .results-count {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .pagination {
+            display: flex;
+            gap: 10px;
+        }
+        .page {
+            color: #fff;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid #222;
+            border-radius: 3px;
+            background: #060606;
+            cursor: pointer;
+        }
+        .page:hover {
+            background: #111;
+            border-color: #333;
+        }
+        .page[disabled] {
+            display: none;
+        }
+        .follow-button {
+            background: #060606;
+            color: #fff;
+            border: 1px solid #282828;
+            border-radius: 3px;
+            padding: 8px 16px;
+            font-size: 14px;
+            cursor: pointer;
+            height: 32px;
+            line-height: 1;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 3;
+            text-decoration: none;
+        }
+        .follow-button:hover {
+            background: #111;
+            border-color: #333;
+            color: #fff;
+            text-decoration: none;
+        }
+        .follow-button.following {
+            background: #060606;
+            border-color: #282828;
+        }
+        .follow-button.following:hover {
+            background: #111;
+            border-color: #282828;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top-color: currentColor;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 2px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+
+        #followModal .modal-content {
+            background: #060606;
+            border: 1px solid #282828;
+            width: 95%;
+            max-width: 600px;
+            height: auto;
+            max-height: 90vh;
+            margin: 50px auto;
+            padding: 0;
+            position: relative;
+        }
+
+        #followModal .modal-user-list {
+            max-height: calc(90vh - 20px);
+            overflow-y: auto;
+        }
+
+        #followModal #searchInput {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background: #060606;
+            border: 1px solid #282828;
+            border-radius: 0;
+            color: #fff;
+            font-size: 14px;
+            padding: 15px 20px;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        #followModal #searchInput:focus {
+            outline: none;
+            border-color: #444;
+            background: #0a0a0a;
+        }
+
+        .user-item {
+            padding: 12px 20px;
+            border-bottom: 1px solid #111;
+            transition: background 0.1s;
+        }
+
+        .user-item:hover {
+            background: #0a0a0a;
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-name {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        #followModal .modal-user-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #followModal .modal-user-list::-webkit-scrollbar-track {
+            background: #060606;
+        }
+
+        #followModal .modal-user-list::-webkit-scrollbar-thumb {
+            background: #282828;
+            border-radius: 0;
+        }
+
+        #followModal .modal-user-list::-webkit-scrollbar-thumb:hover {
+            background: #333;
+        }
+
+        .song-section {
+            margin-top: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        .song-preview audio {
+            max-width: 300px;
+            width: 100%;
+        }
+        .song-preview p {
+            color: #fff;
+            font-size: 14px;
+            margin: 5px 0 0 0;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0 10px;
+                margin: 10px auto;
+            }
+            .profile-header {
+                padding: 15px;
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                text-align: left;
+            }
+            .avatar-container {
+                gap: 4px;
+                display: flex;
+                flex-direction: column;
+            }
+            .profile-avatar {
+                width: 90px;
+                height: 90px;
+                margin-bottom: 0;
+                aspect-ratio: 1/1;
+            }
+            .profile-avatar img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                aspect-ratio: 1/1;
+            }
+            .profile-info {
+                flex-grow: 1;
+                padding-right: 15px;
+            }
+            .profile-header-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+            .profile-name-container {
+                flex: 1;
+                min-width: 0;
+                width: 100%;
+            }
+            .profile-name {
+                font-size: 20px;
+                line-height: 1.2;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .profile-bio {
+                font-size: 13px;
+                padding-right: 0;
+                margin: 4px 0 8px 0;
+            }
+            .follow-button {
+                position: static;
+                width: 90px;
+                margin-top: 4px;
+                font-size: 12px;
+                padding: 0 8px;
+            }
+            .follow-button.edit-desktop {
+                display: none;
+            }
+            .follow-button.edit-mobile {
+                display: block;
+            }
+            .follow-stats {
+                justify-content: flex-start;
+                gap: 15px;
+            }
+            .follow-stat {
+                font-size: 12px;
+            }
+            .table-wrapper {
+                margin: 0;
+            }
+            .data-table {
+                font-size: 12px;
+                table-layout: fixed;
+            }
+            .data-table th,
+            .data-table td {
+                padding: 8px;
+                vertical-align: top;
+            }
+            .data-table th:nth-child(1) {
+                width: 60%;
+            }
+            .data-table th:nth-child(2) {
+                width: 40%;
+                text-align: center;
+            }
+            .data-table td a {
+                margin: -8px;
+                padding: 8px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            }
+            .data-table th:nth-child(3),
+            .data-table td:nth-child(3),
+            .data-table th:nth-child(4),
+            .data-table td:nth-child(4) {
+                display: none;
+            }
+            .song-preview audio {
+                max-width: 250px;
+            }
+        }
+        .edit-desktop {
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .edit-desktop {
+                display: block;
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                z-index: 3;
+            }
+            .edit-mobile {
+                display: none;
+            }
+        }
+        
+        .comments-wrapper {
+            padding: 15px;
+        }
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .comments-list::-webkit-scrollbar {
+            display: block !important;
+            width: 16px;
+        }
+        .comments-list::-webkit-scrollbar-thumb {
+            background: #333;
+        }
+        .comments-list::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+        .comments-list::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        .comment-item {
+            padding: 8px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .comment-main {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 0;
+        }
+        .comment-author {
+            margin-right: 0;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .comment-author a {
+            color: inherit;
+            text-decoration: none;
+            background-repeat: repeat;
+            background-size: cover;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+        .comment-author a:hover {
+            text-decoration: underline;
+        }
+        .comment-text {
+            display: flex;
+            align-items: flex-start;
+            gap: 0;
+            color: #ccc;
+            font-size: 13px;
+            word-break: break-word;
+            white-space: normal;
+        }
+        .comment-content {
+            color: #ccc;
+            font-size: 13px;
+            word-break: break-word;
+            white-space: normal;
+        }
+        .comment-date {
+            color: #fff;
+            font-size: 11px;
+            white-space: nowrap;
+            margin-left: 8px;
+        }
+        .comment-info {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .delete-comment-btn {
+            background: #060606;
+            border: 1px solid #282828;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            cursor: pointer;
+        }
+        .no-comments {
+            color: #666;
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+        }
+        .hidden-comment {
+            background: rgba(255, 0, 0, 0.25);
+        }
+
+        .status-root { color: #ffaa00; }
+        .status-admin { color: #ff4444; }
+        .status-manager { color: #bb71e4; }
+        .status-mod { color: #39ff14; }
+        .status-council { color: #87cefa; }
+        .status-helper { color: #5555ff; }
+        .status-clique { color: #095699; }
+        .status-rich { color: #ffd700; }
+        .status-criminal { color: #780a48; }
+        .status-vip { color: #9b318e; }
+        .status-user { color: #2A9FD6; }
+
+        tr.status-root > td { background-color: #171105 !important; }
+        tr.status-admin > td { background-color: #3D0606 !important; }
+        tr.status-manager > td { background-color: #1A0D2B !important; }
+        tr.status-mod > td { background-color: #0F2D06 !important; }
+        tr.status-council > td { background-color: #1A3D5D !important; }
+        tr.status-helper > td { background-color: #0A0A33 !important; }
+        tr.status-clique > td { background-color: #031C34 !important; }
+        tr.status-rich > td { background-color: #2B200D !important; }
+        tr.status-criminal > td { background-color: #2B021B !important; }
+        tr.status-vip > td { background-color: #2D0A21 !important; }
+        tr.status-user > td { background-color: #060606 !important; }
+
+        .comment-form {
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            border-radius: 3px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .comment-textarea {
+            width: 100%;
+            min-height: 80px;
+            background: #060606;
+            border: 1px solid #282828;
+            border-radius: 3px;
+            padding: 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+        }
+        .comment-textarea:focus {
+            outline: none;
+            border-color: #444;
+        }
+        .post-comment-btn {
+            background: #060606;
+            border: 1px solid #282828;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .post-comment-btn:hover {
+            background: #111;
+            border-color: #333;
+        }
+        .add-comment-btn {
+            background: #060606;
+            border: 1px solid #282828;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .add-comment-btn:hover {
+            background: #111;
+            border-color: #333;
+        }
+        
+        .follow-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+        
+        .follow-modal-content {
+            background: #060606;
+            border: 1px solid #282828;
+            width: 95%;
+            max-width: 500px;
+            height: auto;
+            max-height: 80vh;
+            margin: 120px auto 50px auto;
+            padding: 0;
+            position: relative;
+            border-radius: 3px;
+        }
+        
+        .follow-modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #282828;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .follow-search-container {
+            padding: 15px 20px;
+            border-bottom: 1px solid #282828;
+        }
+        
+        .follow-search-box {
+            background: #282828;
+            border: 1px solid #444;
+            outline: none;
+            color: white;
+            padding: 8px 12px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 3px;
+            font-size: 14px;
+        }
+        
+        .follow-search-box::placeholder {
+            color: #878787;
+        }
+        
+        .follow-search-box:focus {
+            border-color: #666;
+        }
+        
+        .follow-modal-title {
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .follow-modal-close {
+            color: #666;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            line-height: 1;
+        }
+        
+        .follow-modal-close:hover {
+            color: #fff;
+        }
+        
+        .follow-modal-body {
+            max-height: calc(80vh - 80px);
+            overflow-y: auto;
+        }
+        
+        .follow-user-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #282828;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .follow-user-item:last-child {
+            border-bottom: none;
+        }
+        
+        .follow-user-item:hover {
+            background: #0a0a0a;
+        }
+        
+        .follow-user-name {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            flex: 1;
+            background-repeat: repeat;
+            background-size: cover;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            font-weight: bold;
+        }
+        
+        .follow-user-name:hover {
+            text-decoration: underline;
+        }
+        
+        .follow-date {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .follow-modal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .follow-modal-body::-webkit-scrollbar-track {
+            background: #060606;
+        }
+        
+        .follow-modal-body::-webkit-scrollbar-thumb {
+            background: #282828;
+            border-radius: 0;
+        }
+        
+        .follow-modal-body::-webkit-scrollbar-thumb:hover {
+            background: #333;
+        }
+        
+        .no-follows {
+            color: #666;
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body class="bin" style="background-color: #060606;">
+<input type="hidden" name="csrf_token" id="csrf_token" value="YKbw5uM6HVZ3kUK9ibrRaWljcVEhtkMbs5ihhrKJ">
+<div class="main-container">
+    <div class="profile-header{% if banner %} has-banner{% endif %}">
+        {% if banner %}
+        <div class="banner-background">
+            <img src="{{ banner }}" alt="Profile Banner" class="profile-banner-bg">
+            <div class="banner-overlay"></div>
+        </div>
+        {% endif %}
+        {% if username == login %}
+        <a href="/settings" class="follow-button edit-desktop">Edit Profile</a>
+        {% else %}
+        <button class="follow-button{% if is_following %} following{% endif %}" onclick="toggleFollow('{{ login }}', {{ 'true' if not is_following else 'false' }})">
+            {{ 'Following' if is_following else 'Follow' }}
+        </button>
+        {% endif %}
+        <div class="avatar-container">
+            <div class="profile-avatar">
+                <img src="{{ avatar }}" alt="{{ login }}'s avatar">
+            </div>
+        </div>
+
+        <div class="profile-info">
+            <div class="profile-header-row">
+                <div class="profile-name-container">
+                    <h1 class="profile-name">
+                        {% set normalized_status = status | lower %}
+                        {% if normalized_status == 'root' %}
+                            <span style="color: #ffaa00; background-image: url('https://github.com/God-SG/skidbin/blob/main/assets/wealthy.gif'); position: relative;">
+                                {{ login }} <span style="color: #ffaa00;">[Founder]</span>
+                            </span>
+                        {% elif normalized_status == 'admin' %}
+                            <span style="color: #ff4444; background-image: url('https://cdn.doxbin.net/purple.gif'); position: relative;">
+                                {{ login }} <span style="color: #ff4444;">[Admin]</span>
+                            </span>
+                        {% elif normalized_status == 'manager' %}
+                            <span style="color: #bb71e4; background-image: url('https://cdn.doxbin.net/purple.gif'); position: relative;">
+                                {{ login }} <span style="color: #bb71e4;">[Manager]</span>
+                            </span>
+                        {% elif normalized_status == 'mod' %}
+                            <span style="color: #39ff14; background-image: url('https://cdn.doxbin.net/gold.gif'); position: relative;">
+                                {{ login }} <span style="color: #39ff14;">[Mod]</span>
+                            </span>
+                        {% elif normalized_status == 'council' %}
+                            <span style="color: #87cefa;">
+                                {{ login }} <span style="color: #87cefa;">[Council]</span>
+                            </span>
+                        {% elif normalized_status == 'helper' %}
+                            <span style="color: #5555ff;">
+                                {{ login }} <span style="color: #5555ff;">[Helper]</span>
+                            </span>
+                        {% elif normalized_status == 'clique' %}
+                            <span style="color: #095699;">
+                                {{ login }} <span style="color: #095699;">[Clique]</span>
+                            </span>
+                        {% elif normalized_status == 'rich' %}
+                            <span style="color: #ffd700; background-image: url('https://cdn.doxbin.net/gold.gif'); position: relative;">
+                                {{ login }} <span style="color: #ffd700;">[Rich]</span>
+                            </span>
+                        {% elif normalized_status == 'criminal' %}
+                            <span style="color: #780a48;">
+                                {{ login }} <span style="color: #780a48;">[Criminal]</span>
+                            </span>
+                        {% elif normalized_status == 'vip' %}
+                            <span style="color: #9b318e;">
+                                {{ login }} <span style="color: #9b318e;">[VIP]</span>
+                            </span>
+                        {% else %}
+                            <span style="color: {{ username_color }};">
+                                {{ login }} <span style="color: {{ username_color }};">[User]</span>
+                            </span>
+                        {% endif %}
+                    </h1>
+                    <div class="profile-bio">
+                        <p style="font-size: 15px; min-height: 87px;">
+                            {{ bio | safe }}
+                        </p>
+                    </div>
+                    <div class="follow-stats">
+                        <div class="follow-stat" onclick="showFollowers('{{ login }}')">
+                            <span class="follow-count">{{ followers_count | default(0) }}</span>
+                            <span class="follow-label">followers</span>
+                        </div>
+                        <div class="follow-stat" onclick="showFollowing('{{ login }}')">
+                            <span class="follow-count">{{ following_count | default(0) }}</span>
+                            <span class="follow-label">following</span>
+                        </div>
+                    </div>
+                    <div class="song-section">
+                        <div class="song-preview">
+                            <audio id="song-player" autoplay>
+                                <source src="{{ song | default('/static/uploads/cookie_song.mp3') }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <p>{{ song_filename | default('') }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if username == login %}
+        <a href="/settings" class="follow-button edit-mobile">Edit Profile</a>
+        {% else %}
+        <button class="follow-button edit-mobile{% if is_following %} following{% endif %}" onclick="toggleFollow('{{ login }}', {{ 'true' if not is_following else 'false' }})">
+            {{ 'Following' if is_following else 'Follow' }}
+        </button>
+        {% endif %}
+    </div>
+
+    <div class="content-section">
+        <div class="section-header">Information</div>
+        <div class="section-content">
+            <div class="info-row">
+                <span>User ID</span>
+                <span>{{ userid }}</span>
+            </div>
+            <div class="info-row">
+                <span>Joined</span>
+                <span>{{ joined }}</span>
+            </div>
+            <div class="info-row">
+                <span>Pastes</span>
+                <span>{{ paste_count }}</span>
+            </div>
+            <div class="info-row">
+                <span>Followers</span>
+                <span>{{ followers_count | default(0) }}</span>
+            </div>
+            <div class="info-row">
+                <span>Following</span>
+                <span>{{ following_count | default(0) }}</span>
+            </div>
+            <div class="info-row">
+                <span>Comments</span>
+                <span>{{ comments }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="section-header">{{ login }}'s Pastes</div>
+        <div class="section-content">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th class="text-center">Comments</th>
+                        <th class="text-center">Views</th>
+                        <th class="text-center r-hide">Added</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for paste in pastes %}
+                        <tr class="paste-row status-{{ status | lower }}">
+                            <td>
+                                <a href="{{ url_for('post', file=paste[2]) }}" title="{{ paste[2] }}">
+                                    {{ paste[2] }}
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                {{ paste_comments_count[paste[0]] if paste[0] in paste_comments_count else 0 }}
+                            </td>
+                            <td class="text-center">
+                                {{ paste[5] }}
+                            </td>
+                            <td class="text-center r-hide">
+                                {{ paste[3] }} {{ paste[4] }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>                        
+        </div>
+    </div>
+
+    <div class="content-section">
+        <div class="section-header">
+            Profile Comments
+            <button type="button" class="add-comment-btn" id="addCommentBtn" style="float: right; margin-top: -8px;">Add Comment</button>
+        </div>
+        <div class="comment-form" id="profile-comment-form" style="display: none;">
+            <form action="/profile/{{ login }}/add_comment" method="post">
+                <input type="hidden" name="csrf_token" value="YKbw5uM6HVZ3kUK9ibrRaWljcVEhtkMbs5ihhrKJ">
+                <textarea
+                    name="comment"
+                    placeholder="Write a comment on {{ login }}'s profile..."
+                    maxlength="90"
+                    required
+                    class="comment-textarea"
+                ></textarea>
+                <button type="submit" class="post-comment-btn">Post Comment</button>
+            </form>
+        </div>
+        <div class="comments-wrapper">
+            <div class="comments-list">
+                {% if comments_list %}
+                    {% for comment in comments_list %}
+                        <div class="comment-item{% if comment.hidden %} hidden-comment{% endif %}">
+                            <div class="comment-main">
+                                <div class="comment-author">
+                                    <a href="/user/{{ comment.login }}" class="status-{{ comment.loginstatus | lower }}">
+                                        {{ comment.login }}
+                                    </a>
+                                </div>
+                                <div class="comment-text">
+                                    <div class="comment-content">{{ comment.comment | safe }}</div>
+                                    <div class="comment-date">{{ comment.date }}</div>
+                                </div>
+                            </div>
+                            {% if username and status in ['Admin', 'Manager', 'Mod'] %}
+                            <div class="comment-info">
+                                <button class="delete-comment-btn" onclick="window.location.href='/delete_comment/{{ login }}/{{ comment.date }}'">Delete</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="no-comments">
+                        No comments yet. Be the first to comment on {{ login }}'s profile!
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="followModal" class="follow-modal">
+        <div class="follow-modal-content">
+            <div class="follow-modal-header">
+                <h3 class="follow-modal-title" id="followModalTitle">Followers</h3>
+                <button class="follow-modal-close" onclick="closeFollowModal()">&times;</button>
+            </div>
+            <div class="follow-search-container">
+                <input type="text" id="followSearchBox" class="follow-search-box" placeholder="Search users..." onkeyup="filterFollowUsers()" autocomplete="off">
+            </div>
+            <div class="follow-modal-body" id="followModalBody">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Audio handling
+            const audio = document.getElementById('song-player');
+            if (audio) {
+                console.log('Audio element found, src:', audio.src);
+                // Check if audio file is accessible
+                fetch(audio.src, { method: 'HEAD' })
+                    .then(response => {
+                        if (!response.ok) {
+                            console.error('Audio file inaccessible, status:', response.status);
+                        } else {
+                            // Attempt autoplay
+                            audio.play().then(() => {
+                                console.log('Autoplay successful');
+                            }).catch(error => {
+                                console.error('Autoplay failed:', error.message);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error checking audio file:', error);
+                    });
+
+                // Define playAudio function only if audio exists
+                function playAudio() {
+                    console.log('Attempting to play audio:', audio.src);
+                    audio.play().then(() => {
+                        console.log('Audio playing successfully');
+                    }).catch(error => {
+                        console.error('Audio playback failed:', error.message);
+                    });
+                }
+
+                // Add event listeners only if audio exists
+                document.addEventListener('mousedown', playAudio, { once: true });
+                document.addEventListener('keydown', playAudio, { once: true });
+            } else {
+                console.error('No audio element found on page load');
+            }
+
+            // Add comment button toggle
+            const addCommentBtn = document.getElementById('addCommentBtn');
+            if (addCommentBtn) {
+                addCommentBtn.addEventListener('click', function() {
+                    const form = document.getElementById('profile-comment-form');
+                    if (form.style.display === 'none' || form.style.display === '') {
+                        form.style.display = 'block';
+                        addCommentBtn.textContent = 'Cancel';
+                    } else {
+                        form.style.display = 'none';
+                        addCommentBtn.textContent = 'Add Comment';
+                    }
+                });
+            }
+        });
+
+        function showFollowers(username) {
+            fetch(`/followers/${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error loading followers: ' + data.error);
+                        return;
+                    }
+                    const modal = document.getElementById('followModal');
+                    const title = document.getElementById('followModalTitle');
+                    const searchBox = document.getElementById('followSearchBox');
+                    title.textContent = 'Followers';
+                    modal.style.display = 'block';
+                    searchBox.value = '';
+                    currentFollowers = data.followers;
+                    currentModalType = 'followers';
+                    displayUserList(data.followers, 'followers');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error loading followers');
+                });
+        }
+
+        function showFollowing(username) {
+            fetch(`/following/${username}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error loading following: ' + data.error);
+                        return;
+                    }
+                    const modal = document.getElementById('followModal');
+                    const title = document.getElementById('followModalTitle');
+                    const searchBox = document.getElementById('followSearchBox');
+                    title.textContent = 'Following';
+                    modal.style.display = 'block';
+                    searchBox.value = '';
+                    currentFollowing = data.following;
+                    currentModalType = 'following';
+                    displayUserList(data.following, 'following');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error loading following');
+                });
+        }
+
+        function closeFollowModal() {
+            document.getElementById('followModal').style.display = 'none';
+        }
+
+        function getStatusColor(status) {
+            const colors = {
+                'root': '#ffaa00',
+                'admin': '#ff4444',
+                'manager': '#bb71e4',
+                'mod': '#39ff14',
+                'council': '#87cefa',
+                'helper': '#5555ff',
+                'clique': '#095699',
+                'rich': '#ffd700',
+                'criminal': '#780a48',
+                'vip': '#9b318e',
+                'user': '#2A9FD6'
+            };
+            return colors[status.toLowerCase()] || '#2A9FD6';
+        }
+
+        function getStatusBackground(status) {
+            const backgrounds = {
+                'admin': 'url("/static/files/red.gif")',
+                'manager': 'url("/static/files/purple.gif")',
+                'rich': 'url("/static/files/gold.gif")'
+            };
+            return backgrounds[status.toLowerCase()] || 'none';
+        }
+
+        function getStatusText(status) {
+            const texts = {
+                'root': '[Founder]',
+                'admin': '[Admin]',
+                'manager': '[Manager]',
+                'mod': '[Mod]',
+                'council': '[Council]',
+                'helper': '[Helper]',
+                'clique': '[Clique]',
+                'rich': '[Rich]',
+                'criminal': '[Criminal]',
+                'vip': '[VIP]'
+            };
+            return texts[status.toLowerCase()] || '[User]';
+        }
+
+        function formatDate(dateStr) {
+            const date = new Date(dateStr.replace(/(\d{2})-(\d{2})-(\d{4})/, '$3-$2-$1'));
+            const now = new Date();
+            const diffMs = now - date;
+            const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            if (diffDays === 0) return 'Today';
+            else if (diffDays === 1) return 'Yesterday';
+            else if (diffDays < 7) return `${diffDays} days ago`;
+            else if (diffDays < 30) {
+                const weeks = Math.floor(diffDays / 7);
+                return `${weeks} week${weeks > 1 ? 's' : ''} ago`;
+            } else if (diffDays < 365) {
+                const months = Math.floor(diffDays / 30);
+                return `${months} month${months > 1 ? 's' : ''} ago`;
+            } else {
+                const years = Math.floor(diffDays / 365);
+                return `${years} year${years > 1 ? 's' : ''} ago`;
+            }
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('followModal');
+            if (event.target === modal) closeFollowModal();
+        }
+
+        let currentFollowers = [];
+        let currentFollowing = [];
+        let currentModalType = '';
+
+        function toggleFollow(username, follow) {
+            const button = event.target;
+            const originalText = button.textContent;
+            const isFollowing = button.classList.contains('following');
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner"></span>';
+            const url = follow ? `/follow/${username}` : `/unfollow/${username}`;
+            const method = 'POST';
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.getElementById('csrf_token').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (follow) {
+                        button.classList.add('following');
+                        button.textContent = 'Following';
+                        button.onclick = () => toggleFollow(username, false);
+                    } else {
+                        button.classList.remove('following');
+                        button.textContent = 'Follow';
+                        button.onclick = () => toggleFollow(username, true);
+                    }
+                    const followerCountElement = document.querySelector('.follow-stat .follow-count');
+                    if (followerCountElement) {
+                        const currentCount = parseInt(followerCountElement.textContent);
+                        const newCount = follow ? currentCount + 1 : Math.max(0, currentCount - 1);
+                        followerCountElement.textContent = newCount;
+                    }
+                } else {
+                    alert(data.error || 'An error occurred');
+                    button.textContent = originalText;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while processing your request');
+                button.textContent = originalText;
+            })
+            .finally(() => { button.disabled = false; });
+        }
+
+        function filterFollowUsers() {
+            const searchBox = document.getElementById('followSearchBox');
+            const searchTerm = searchBox.value.toLowerCase();
+            const modalBody = document.getElementById('followModalBody');
+            let currentList = currentModalType === 'followers' ? currentFollowers : currentFollowing;
+            if (searchTerm === '') {
+                displayUserList(currentList, currentModalType);
+                return;
+            }
+            const filteredUsers = currentList.filter(user => user.username.toLowerCase().includes(searchTerm));
+            if (filteredUsers.length === 0) {
+                modalBody.innerHTML = '<div class="no-follows">No users found matching your search.</div>';
+                return;
+            }
+            displayUserList(filteredUsers, currentModalType);
+        }
+
+        function displayUserList(users, type) {
+            const modalBody = document.getElementById('followModalBody');
+            if (users.length === 0) {
+                const message = type === 'followers' ? 'No followers yet.' : 'Not following anyone yet.';
+                modalBody.innerHTML = `<div class="no-follows">${message}</div>`;
+                return;
+            }
+            let html = '';
+            users.forEach(user => {
+                const customColor = user.username_color || getStatusColor(user.status);
+                const statusColor = getStatusColor(user.status);
+                const statusGif = getStatusBackground(user.status);
+                const statusText = getStatusText(user.status);
+                const gifHtml = statusGif !== 'none' ? `<img src="${statusGif.replace('url("', '').replace('")', '')}" alt="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.3;">` : '';
+                const textHtml = `<span style="position: relative; z-index: 2;"><span style="color: ${customColor};">${user.username}</span>${statusText ? ' <span style="color: ' + statusColor + ';">' + statusText + '</span>' : ''}</span>`;
+                html += `
+                    <div class="follow-user-item">
+                        <a href="/user/${user.username}" class="follow-user-name" style="font-weight: bold; position: relative; display: inline-block; width: fit-content;">
+                            <div style="position: relative; display: inline-block; width: fit-content;">
+                                ${gifHtml}${textHtml}
+                            </div>
+                        </a>
+                    </div>
+                `;
+            });
+            modalBody.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
+{% endblock %}

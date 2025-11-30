@@ -1,0 +1,125 @@
+{% block top %}
+{% endblock %}
+
+<style>
+    .rank-badge {
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-size: 0.85em;
+        margin-left: 5px;
+        position: relative;
+    }
+</style>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                aria-expanded="false" aria-controls="navbar">
+                Please log in from your computer
+            </button>
+            <a style="color: rgb(252, 252, 252);" class="navbar-brand" href="{{ url_for('index') }}">
+                sigmabin 
+            </a>
+        </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+            <ul style="color: white;" class="nav navbar-nav">
+                <li class="">
+                    <a href="{{ url_for('index') }}">
+                        Home
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('new_paste') }}">
+                        Add Paste
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('users') }}">
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('hall_of_loosers') }}">
+                        Hall of Autism
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('tos') }}">
+                        TOS
+                    </a>
+                </li>
+                <li>
+                    <a href="https://t.me/darkbin_channel">
+                        Telegram
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-right">
+                <ul class="nav navbar-nav">
+                    {% if username %}
+                        <!-- Debug: Raw user_rank: {{ user_rank | default('None') }}, Normalized: {{ user_rank | default('None') | lower }} -->
+                        <li>
+                            <a href="{{ url_for('user', username=username) }}">
+                                {% set normalized_rank = user_rank | default('unknown') | lower %}
+                                {% if normalized_rank == 'root' %}
+                                    <span class="rank-badge" style="color: #ffaa00; background-image: url('https://github.com/God-SG/skidbin/blob/main/assets/wealthy.gif');">
+                                        {{ username }} <span style="color: #ffaa00;">[Founder]</span>
+                                    </span>
+                                {% elif normalized_rank == 'admin' %}
+                                    <span class="rank-badge" style="color: #ff4444; background-image: url('https://cdn.doxbin.net/purple.gif');">
+                                        {{ username }} <span style="color: #ff4444;">[Admin]</span>
+                                    </span>
+                                {% elif normalized_rank == 'manager' %}
+                                    <span class="rank-badge" style="color: #bb71e4; background-image: url('https://cdn.doxbin.net/purple.gif');">
+                                        {{ username }} <span style="color: #bb71e4;">[Manager]</span>
+                                    </span>
+                                {% elif normalized_rank == 'mod' %}
+                                    <span class="rank-badge" style="color: #39ff14; background-image: url('https://cdn.doxbin.net/gold.gif');">
+                                        {{ username }} <span style="color: #39ff14;">[Mod]</span>
+                                    </span>
+                                {% elif normalized_rank == 'council' %}
+                                    <span class="rank-badge" style="color: #87cefa;">
+                                        {{ username }} <span style="color: #87cefa;">[Council]</span>
+                                    </span>
+                                {% elif normalized_rank == 'helper' %}
+                                    <span class="rank-badge" style="color: #5555ff;">
+                                        {{ username }} <span style="color: #5555ff;">[Helper]</span>
+                                    </span>
+                                {% elif normalized_rank == 'clique' %}
+                                    <span class="rank-badge" style="color: #095699;">
+                                        {{ username }} <span style="color: #095699;">[Clique]</span>
+                                    </span>
+                                {% elif normalized_rank == 'rich' %}
+                                    <span class="rank-badge" style="color: #ffd700; background-image: url('https://cdn.doxbin.net/gold.gif');">
+                                        {{ username }} <span style="color: #ffd700;">[Rich]</span>
+                                    </span>
+                                {% elif normalized_rank == 'criminal' %}
+                                    <span class="rank-badge" style="color: #780a48;">
+                                        {{ username }} <span style="color: #780a48;">[Criminal]</span>
+                                    </span>
+                                {% elif normalized_rank == 'vip' %}
+                                    <span class="rank-badge" style="color: #9b318e;">
+                                        {{ username }} <span style="color: #9b318e;">[VIP]</span>
+                                    </span>
+                                {% else %}
+                                    <span class="rank-badge" style="color: {{ username_color | default('#ffffff') }};">
+                                        {{ username }} <span style="color: {{ username_color | default('#ffffff') }};">[Unknown]</span>
+                                    </span>
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% block bottom %}
+{% endblock %}

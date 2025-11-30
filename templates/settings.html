@@ -1,0 +1,310 @@
+{% extends "navbar.html" %}
+
+{% block top %}
+<!DOCTYPE html>
+<html lang="en" style="min-height: 100%;">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings | Darkbin</title>
+    <link rel="stylesheet" href="/static/legacy/index.css">
+    <link rel="stylesheet" href="/static/files/dropdown.css">
+    <link rel="stylesheet" href="/static/files/doxbin.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="canonical" href="https://darkbin.com/settings"/>
+
+    <style>
+        .main-container {
+            max-width: 1000px;
+            margin: 40px auto 20px auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+        .settings-section {
+            background: #060606;
+            border: 1px solid #282828;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .section-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #282828;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .section-content {
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background: #060606;
+            border: 1px solid #282828;
+            border-radius: 3px;
+            padding: 10px;
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #444;
+        }
+        .form-group input[type="file"] {
+            color: #fff;
+            font-size: 14px;
+        }
+        .form-group input[type="file"]::file-selector-button {
+            background: #060606;
+            border: 1px solid #282828;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .form-group input[type="file"]::file-selector-button:hover {
+            background: #111;
+            border-color: #333;
+        }
+        .submit-btn {
+            background: #060606;
+            border: 1px solid #282828;
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .submit-btn:hover {
+            background: #111;
+            border-color: #333;
+        }
+        .preview-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .preview-image {
+            max-width: 200px;
+            max-height: 100px;
+            border-radius: 3px;
+            object-fit: cover;
+        }
+        .avatar-preview {
+            width: 120px;
+            height: 120px;
+            border-radius: 3px;
+            object-fit: cover;
+            aspect-ratio: 1/1;
+        }
+        .song-preview audio {
+            max-width: 300px;
+            width: 100%;
+        }
+        .song-preview p {
+            color: #fff;
+            font-size: 14px;
+            margin: 5px 0 0 0;
+        }
+        .error-message {
+            color: #ff4444;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 0 10px;
+                margin: 10px auto;
+            }
+            .settings-section {
+                padding: 15px;
+            }
+            .section-content {
+                padding: 15px;
+            }
+            .form-group label {
+                font-size: 13px;
+            }
+            .form-group input[type="text"],
+            .form-group textarea,
+            .form-group select {
+                font-size: 13px;
+            }
+            .preview-image {
+                max-width: 150px;
+                max-height: 75px;
+            }
+            .avatar-preview {
+                width: 90px;
+                height: 90px;
+            }
+            .song-preview audio {
+                max-width: 250px;
+            }
+            .submit-btn {
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+            .error-message {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body class="bin" style="background-color: #060606;">
+    <input type="hidden" name="csrf_token" id="csrf_token" value="YKbw5uM6HVZ3kUK9ibrRaWljcVEhtkMbs5ihhrKJ">
+    <div class="main-container">
+        <div class="settings-section">
+            <div class="section-header">Profile Settings</div>
+            <div class="section-content">
+                {% if error %}
+                    <div class="error-message">{{ error }}</div>
+                {% endif %}
+                <form action="/settings" method="post" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="YKbw5uM6HVZ3kUK9ibrRaWljcVEhtkMbs5ihhrKJ">
+                    <div class="form-group">
+                        <label for="banner">Banner</label>
+                        <input type="file" id="banner" name="banner" accept="image/*">
+                        <div class="preview-container">
+                            <img id="banner-preview" class="preview-image" src="{{ banner }}" alt="Banner Preview" style="{% if not banner %}display: none;{% endif %}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="avatar">Avatar</label>
+                        <input type="file" id="avatar" name="avatar" accept="image/*">
+                        <div class="preview-container">
+                            <img id="avatar-preview" class="avatar-preview" src="{{ avatar }}" alt="Avatar Preview">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="song">Profile Song (MP3)</label>
+                        <input type="file" id="song" name="song" accept="audio/mp3,audio/mpeg">
+                        <div class="preview-container song-preview">
+                            <audio id="song-preview" controls style="{% if not song %}display: none;{% endif %}">
+                                <source src="{{ song }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                            <p id="song-name">{{ song_filename if song_filename else 'No song selected' }}</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" value="{{ login }}" maxlength="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bio">Bio</label>
+                        <textarea id="bio" name="bio" placeholder="Write something about yourself...">{{ bio }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="username_color">Username Color</label>
+                        <select id="username_color" name="username_color">
+                            <option value="#2A9FD6" {% if username_color == '#2A9FD6' %}selected{% endif %}>Default (#2A9FD6)</option>
+                            <option value="#ffaa00" {% if username_color == '#ffaa00' %}selected{% endif %}>Gold (#ffaa00)</option>
+                            <option value="#ff4444" {% if username_color == '#ff4444' %}selected{% endif %}>Red (#ff4444)</option>
+                            <option value="#bb71e4" {% if username_color == '#bb71e4' %}selected{% endif %}>Purple (#bb71e4)</option>
+                            <option value="#39ff14" {% if username_color == '#39ff14' %}selected{% endif %}>Green (#39ff14)</option>
+                            <option value="#87cefa" {% if username_color == '#87cefa' %}selected{% endif %}>Light Blue (#87cefa)</option>
+                            <option value="#5555ff" {% if username_color == '#5555ff' %}selected{% endif %}>Blue (#5555ff)</option>
+                            <option value="#095699" {% if username_color == '#095699' %}selected{% endif %}>Dark Blue (#095699)</option>
+                            <option value="#ffd700" {% if username_color == '#ffd700' %}selected{% endif %}>Yellow (#ffd700)</option>
+                            <option value="#780a48" {% if username_color == '#780a48' %}selected{% endif %}>Maroon (#780a48)</option>
+                            <option value="#9b318e" {% if username_color == '#9b318e' %}selected{% endif %}>Pink (#9b318e)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Banner preview
+            const bannerInput = document.getElementById('banner');
+            const bannerPreview = document.getElementById('banner-preview');
+            bannerInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        bannerPreview.src = e.target.result;
+                        bannerPreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    bannerPreview.src = '{{ banner }}';
+                    bannerPreview.style.display = '{{ "block" if banner else "none" }}';
+                }
+            });
+
+            // Avatar preview
+            const avatarInput = document.getElementById('avatar');
+            const avatarPreview = document.getElementById('avatar-preview');
+            avatarInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        avatarPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    avatarPreview.src = '{{ avatar }}';
+                }
+            });
+
+            // Song preview
+            const songInput = document.getElementById('song');
+            const songPreview = document.getElementById('song-preview');
+            const songName = document.getElementById('song-name');
+            songInput.addEventListener('change', function() {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        songPreview.src = e.target.result;
+                        songPreview.style.display = 'block';
+                        songName.textContent = file.name;
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    songPreview.src = '{{ song }}';
+                    songPreview.style.display = '{{ "block" if song else "none" }}';
+                    songName.textContent = '{{ song_filename if song_filename else "No song selected" }}';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}
