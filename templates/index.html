@@ -3,6 +3,7 @@
 {% block top %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,21 +19,29 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+
         ::-webkit-scrollbar {
             display: none;
         }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
             background-color: #060606;
             color: white;
             margin: 0;
         }
-        input, textarea, select {
+
+        input,
+        textarea,
+        select {
             font-size: 16px !important;
             outline: none !important;
             box-shadow: none !important;
         }
-        input:focus, textarea:focus, select:focus {
+
+        input:focus,
+        textarea:focus,
+        select:focus {
             outline: none !important;
             box-shadow: none !important;
         }
@@ -52,6 +61,7 @@
             text-align: center;
             margin: 10px 0 0 0;
         }
+
         .search-label {
             color: #888888;
             font-weight: bold;
@@ -59,11 +69,13 @@
             margin-bottom: 5px;
             font-size: 14px;
         }
+
         .search-form {
             display: flex;
             justify-content: center;
             gap: 5px;
         }
+
         .search-box {
             background: #282828;
             border: none;
@@ -73,9 +85,11 @@
             height: 32px;
             box-sizing: border-box;
         }
+
         .search-box::placeholder {
             color: #878787;
         }
+
         .search-button {
             background: #282828;
             color: white;
@@ -92,40 +106,50 @@
             text-align: center;
             margin: 10px 0;
         }
+
         .announcement {
             margin: 10px 0;
             font-size: 17px;
             font-weight: bold;
         }
+
         .announcement a {
             text-decoration: none;
             color: inherit;
         }
+
         .announcement a:hover {
             text-decoration: underline;
         }
 
         /* Pinned and all pastes tables (Skidbin style) */
-        .pinned-pastes, .all-pastes {
+        .pinned-pastes,
+        .all-pastes {
             width: 75%;
             max-width: 1100px;
             margin: 10px auto 25px;
             color: white;
         }
-        .pinned-pastes h2, .all-pastes h2 {
+
+        .pinned-pastes h2,
+        .all-pastes h2 {
             color: white;
             margin: 10px 0;
             padding: 0;
             font-weight: normal;
             font-size: 16px;
         }
-        .pinned-pastes table, .all-pastes table {
+
+        .pinned-pastes table,
+        .all-pastes table {
             width: 100%;
             border-collapse: collapse;
             background: #080808;
             font-size: 14px;
         }
-        .pinned-pastes th, .all-pastes th {
+
+        .pinned-pastes th,
+        .all-pastes th {
             padding: 8px;
             text-align: left;
             background: #181818;
@@ -133,56 +157,85 @@
             border: none;
             border-bottom: 1px solid #333;
         }
-        .pinned-pastes th:not(:first-child), .all-pastes th:not(:first-child) {
+
+        .pinned-pastes th:not(:first-child),
+        .all-pastes th:not(:first-child) {
             text-align: center;
         }
-        .pinned-pastes td, .all-pastes td {
+
+        .pinned-pastes td,
+        .all-pastes td {
             padding: 9px;
             border: none;
             border-bottom: 1px solid #333;
         }
-        .pinned-pastes td:not(:first-child), .all-pastes td:not(:first-child) {
+
+        .pinned-pastes td:not(:first-child),
+        .all-pastes td:not(:first-child) {
             text-align: center;
         }
-        .pinned-pastes tr, .all-pastes tr {
+
+        .pinned-pastes tr,
+        .all-pastes tr {
             background: #000000;
         }
-        .pinned-pastes a, .all-pastes a {
+
+        .pinned-pastes a,
+        .all-pastes a {
             color: inherit;
             text-decoration: none;
         }
-        .pinned-pastes a:hover, .all-pastes a:hover {
+
+        .pinned-pastes a:hover,
+        .all-pastes a:hover {
             text-decoration: underline;
         }
-        .pinned-pastes td:first-child, .pinned-pastes th:first-child, .all-pastes td:first-child, .all-pastes th:first-child {
+
+        .pinned-pastes td:first-child,
+        .pinned-pastes th:first-child,
+        .all-pastes td:first-child,
+        .all-pastes th:first-child {
             width: 35%;
         }
-        .pinned-pastes td:nth-child(2), .pinned-pastes th:nth-child(2), .all-pastes td:nth-child(2), .all-pastes th:nth-child(2) {
+
+        .pinned-pastes td:nth-child(2),
+        .pinned-pastes th:nth-child(2),
+        .all-pastes td:nth-child(2),
+        .all-pastes th:nth-child(2) {
             width: 10%;
         }
-        .pinned-pastes td:nth-child(3), .pinned-pastes th:nth-child(3), .all-pastes td:nth-child(3), .all-pastes th:nth-child(3) {
+
+        .pinned-pastes td:nth-child(3),
+        .pinned-pastes th:nth-child(3),
+        .all-pastes td:nth-child(3),
+        .all-pastes th:nth-child(3) {
             width: 10%;
         }
-        .pinned-pastes td:nth-child(4), .pinned-pastes th:nth-child(4), .all-pastes td:nth-child(4), .all-pastes th:nth-child(4) {
+
+        .pinned-pastes td:nth-child(4),
+        .pinned-pastes th:nth-child(4),
+        .all-pastes td:nth-child(4),
+        .all-pastes th:nth-child(4) {
             width: 20%;
         }
-        .pinned-pastes td:nth-child(5), .pinned-pastes th:nth-child(5), .all-pastes td:nth-child(5), .all-pastes th:nth-child(5) {
+
+        .pinned-pastes td:nth-child(5),
+        .pinned-pastes th:nth-child(5),
+        .all-pastes td:nth-child(5),
+        .all-pastes th:nth-child(5) {
             width: 25%;
         }
 
         /* Ensure admin styles override others by placing at the end */
         .all-pastes tr:nth-child(even) {
-            background: #3D0606; /* Default alternating background */
+            background: #3D0606;
+            /* Default alternating background */
         }
-        {% if status == 'admin' %}
+
         .all-pastes tbody tr {
-            background: #3D0606 !important; /* Red background for all rows in Pastes table for admins */
-        }
-        {% endif %}
-        /* Temporary test: Uncomment below to force red background for all users to verify CSS */
-        /* .all-pastes tbody tr {
             background: #3D0606 !important;
-        } */
+            /* Red background for all rows in Pastes table for admins */
+        }
 
         /* Pagination (Skidbin style) */
         .pagination {
@@ -196,6 +249,7 @@
             transform: translateX(-50%);
             font-size: 13px;
         }
+
         .pagination a {
             color: #FFFFFF;
             text-decoration: none;
@@ -206,17 +260,21 @@
             border: 1px solid #878787;
             margin-left: -1px;
         }
+
         .pagination a:first-child {
             border-radius: 3px 0 0 3px;
             margin-left: 0;
         }
+
         .pagination a:last-child {
             border-radius: 0 3px 3px 0;
         }
+
         .pagination a:hover {
             color: white;
             background: #181818;
         }
+
         .pagination a.active {
             color: white;
             background: #181818;
@@ -228,86 +286,127 @@
             text-align: center;
             margin: 20px 0;
         }
+
         .back-to-top a {
             color: #2A9FD6;
             text-decoration: none;
             font-size: 14px;
         }
+
         .back-to-top a:hover {
             text-decoration: underline;
         }
 
         /* Responsive design (Skidbin style) */
         @media screen and (max-width: 1024px) {
-            .pinned-pastes, .all-pastes {
+
+            .pinned-pastes,
+            .all-pastes {
                 width: 90%;
             }
         }
+
         @media screen and (max-width: 768px) {
-            .pinned-pastes, .all-pastes {
+
+            .pinned-pastes,
+            .all-pastes {
                 width: 95%;
             }
-            .pinned-pastes table, .all-pastes table {
+
+            .pinned-pastes table,
+            .all-pastes table {
                 font-size: 13px;
             }
-            .pinned-pastes td:nth-child(2), .pinned-pastes th:nth-child(2),
-            .all-pastes td:nth-child(2), .all-pastes th:nth-child(2),
-            .pinned-pastes td:nth-child(3), .pinned-pastes th:nth-child(3),
-            .all-pastes td:nth-child(3), .all-pastes th:nth-child(3) {
+
+            .pinned-pastes td:nth-child(2),
+            .pinned-pastes th:nth-child(2),
+            .all-pastes td:nth-child(2),
+            .all-pastes th:nth-child(2),
+            .pinned-pastes td:nth-child(3),
+            .pinned-pastes th:nth-child(3),
+            .all-pastes td:nth-child(3),
+            .all-pastes th:nth-child(3) {
                 display: none;
             }
-            .pinned-pastes td:first-child, .pinned-pastes th:first-child,
-            .all-pastes td:first-child, .all-pastes th:first-child {
+
+            .pinned-pastes td:first-child,
+            .pinned-pastes th:first-child,
+            .all-pastes td:first-child,
+            .all-pastes th:first-child {
                 width: 45%;
             }
-            .pinned-pastes td:nth-child(4), .pinned-pastes th:nth-child(4),
-            .all-pastes td:nth-child(4), .all-pastes th:nth-child(4) {
+
+            .pinned-pastes td:nth-child(4),
+            .pinned-pastes th:nth-child(4),
+            .all-pastes td:nth-child(4),
+            .all-pastes th:nth-child(4) {
                 width: 30%;
             }
-            .pinned-pastes td:nth-child(5), .pinned-pastes th:nth-child(5),
-            .all-pastes td:nth-child(5), .all-pastes th:nth-child(5) {
+
+            .pinned-pastes td:nth-child(5),
+            .pinned-pastes th:nth-child(5),
+            .all-pastes td:nth-child(5),
+            .all-pastes th:nth-child(5) {
                 width: 25%;
             }
+
             .ascii-art {
                 font-size: 12px;
             }
         }
+
         @media screen and (max-width: 480px) {
-            .pinned-pastes, .all-pastes {
+
+            .pinned-pastes,
+            .all-pastes {
                 width: 100%;
                 margin: 20px 5px;
             }
-            .pinned-pastes table, .all-pastes table {
+
+            .pinned-pastes table,
+            .all-pastes table {
                 font-size: 12px;
                 table-layout: fixed;
             }
+
             .search-box {
                 width: 180px;
             }
-            .pinned-pastes td, .pinned-pastes th, .all-pastes td, .all-pastes th {
+
+            .pinned-pastes td,
+            .pinned-pastes th,
+            .all-pastes td,
+            .all-pastes th {
                 padding: 6px 4px;
             }
-            .pinned-pastes td:first-child, .pinned-pastes th:first-child,
-            .all-pastes td:first-child, .all-pastes th:first-child {
+
+            .pinned-pastes td:first-child,
+            .pinned-pastes th:first-child,
+            .all-pastes td:first-child,
+            .all-pastes th:first-child {
                 width: 45%;
                 max-width: 120px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
-            .pinned-pastes td:first-child a, .all-pastes td:first-child a {
+
+            .pinned-pastes td:first-child a,
+            .all-pastes td:first-child a {
                 display: block;
                 width: 100%;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
             .ascii-art {
                 font-size: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Debug status for troubleshooting -->
     <div style="text-align: center; color: #fff; margin: 10px;">
@@ -317,12 +416,12 @@
         <div class="col-md-12" style="margin-top: 60px; float: none;">
             <div align="center">
                 <div class="ascii-art">
-       _           _ _ _      _        
-      | |          (_) | |   (_)       
-    __| | _____   ___| | |__  _ _ __   
-   / _` |/ _ \ \ / / | | '_ \| | '_ \  
-  | (_| |  __/\ V /| | | |_) | | | | | 
-   \__,_|\___| \_/ |_|_|_.__/|_|_| |_| 
+                    _________.__ __________.__
+                    / _____/|__| ____ _____ _____ \______ \__| ____
+                    \_____ \ | |/ ___\ / \\__ \ | | _/ |/ \
+                    / \| / /_/ > Y Y \/ __ \| | \ | | \
+                    /_______ /|__\___ /|__|_| (____ /______ /__|___| /
+                    \/ /_____/ \/ \/ \/ \/
                 </div>
                 <div class="announcements">
                     <div class="announcement" style="color:#0091ff;">
@@ -364,11 +463,14 @@
                         <td class="text-center" style="color: #FFFFFF;">
                             {% set rank = pinned_post.pastownerstatus|default('unknown')|capitalize %}
                             {% if pinned_post.pastownerstatus in ['root', 'admin', 'mod', 'council', 'user'] %}
-                                {{ pinned_post.pastowner|default('Unknown') }} <span style="color: #CC0000;">[{{ rank }}]</span>
+                            {{ pinned_post.pastowner|default('Unknown') }} <span style="color: #CC0000;">[{{ rank
+                                }}]</span>
                             {% elif pinned_post.pastownerstatus == 'anonymous' %}
-                                <span style="color: #bbb; font-style: italic;">{{ pinned_post.pastowner|default('Anonymous') }} [Anonymous]</span>
+                            <span style="color: #bbb; font-style: italic;">{{ pinned_post.pastowner|default('Anonymous')
+                                }} [Anonymous]</span>
                             {% else %}
-                                <span style="color: #bbb; font-style: italic;">{{ pinned_post.pastowner|default('Unknown') }} [{{ rank }}]</span>
+                            <span style="color: #bbb; font-style: italic;">{{ pinned_post.pastowner|default('Unknown')
+                                }} [{{ rank }}]</span>
                             {% endif %}
                         </td>
                         <td class="text-center">{{ pinned_post.creation_date }} {{ pinned_post.creation_time }}</td>
@@ -404,11 +506,14 @@
                         <td class="text-center" style="color: #ff0000;">
                             {% set rank = anon_post.pastownerstatus|default('unknown')|capitalize %}
                             {% if anon_post.pastownerstatus in ['root', 'admin', 'mod', 'council', 'user'] %}
-                                {{ anon_post.pastowner|default('Unknown') }} <span style="color: #CC0000;">[{{ rank }}]</span>
+                            {{ anon_post.pastowner|default('Unknown') }} <span style="color: #CC0000;">[{{ rank
+                                }}]</span>
                             {% elif anon_post.pastownerstatus == 'anonymous' %}
-                                <span style="color: #fdfdfd; font-style: italic;">{{ anon_post.pastowner|default('Anonymous') }} </span>
+                            <span style="color: #fdfdfd; font-style: italic;">{{
+                                anon_post.pastowner|default('Anonymous') }} </span>
                             {% else %}
-                                <span style="color: #ff0000; font-style: italic;">{{ anon_post.pastowner|default('Unknown') }} [{{ rank }}]</span>
+                            <span style="color: #ff0000; font-style: italic;">{{ anon_post.pastowner|default('Unknown')
+                                }} [{{ rank }}]</span>
                             {% endif %}
                         </td>
                         <td class="text-center">{{ anon_post.creation_date }} {{ anon_post.creation_time }}</td>
@@ -435,5 +540,6 @@
         </div>
     </div>
 </body>
+
 </html>
 {% endblock %}
